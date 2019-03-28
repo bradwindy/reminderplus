@@ -19,7 +19,7 @@ I use [SemVer](http://semver.org/) for versioning.
 
 ## License
 
-Copyright (C) Bradley Windybank - All Rights Reserved .Unauthorized copying of this file, via any medium is strictly prohibited. This code is Proprietary and confidential. Written by Bradley Windybank <trykryda@gmail.com>, 2019.
+Copyright (C) Bradley Windybank - All Rights Reserved. Unauthorized copying of this file, via any medium is strictly prohibited. This code is Proprietary and confidential. Written by Bradley Windybank <trykryda@gmail.com>, 2019.
 
 ## Acknowledgments
 
