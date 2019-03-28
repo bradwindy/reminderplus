@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:reminder_plus/database/database_helper.dart';
 import 'package:reminder_plus/database/model/reminder.dart';
-import 'package:reminder_plus/homescreen.dart';
 
 class AddReminderPage extends StatefulWidget {
   Reminder reminder;
@@ -20,8 +19,8 @@ class AddReminderPage extends StatefulWidget {
 class _AddReminderPageState extends State<AddReminderPage>{
   final editReminderText = TextEditingController();
 
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
+  DateTime selectedDate;
+  TimeOfDay selectedTime;
 
   List monthList = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
   List weekdayList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -29,6 +28,8 @@ class _AddReminderPageState extends State<AddReminderPage>{
   int selectedMonth;
   String selectedDay;
   int selectedWeekday;
+
+  String selectedCategory = "Inbox";
 
   Future<Null> _selectDate(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
@@ -69,10 +70,16 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
   @override
   Widget build(BuildContext context) {
-    if (widget.reminder != null) {
-      widget.reminder= new Reminder("");
-      editReminderText.text = widget.reminder.text;
+    if (!widget.isEdit) {
+      //So I can build buttons with these default values
+      widget.reminder= new Reminder("", DateTime.now(), "Inbox");
     }
+
+    editReminderText.text = widget.reminder.text;
+    selectedDate = widget.reminder.date;
+
+    // TODO construct time from date here here
+
 
     return new Scaffold(
       appBar: new AppBar(
@@ -105,6 +112,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
                         },
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[
+                            // TODO FORMAT DATE HERE FROM SELECTED DATE
                             Text("Monday 25th March",
                               style: TextStyle(fontWeight: FontWeight.normal),
                             ),
@@ -128,6 +136,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
                         },
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[
+                            // TODO FORMAT TIME HERE FROM SELECTED TIME
                             Text("8:00PM",
                               style: TextStyle(fontWeight: FontWeight.normal),
                             ),
@@ -173,7 +182,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => {
-        addRecord(widget.isEdit),
+        addRecord(widget.isEdit, widget.reminder),
         Navigator.pop(context),
         },
         tooltip: 'Done',
@@ -223,9 +232,12 @@ class _AddReminderPageState extends State<AddReminderPage>{
     return loginBtn;
   }
 
-  Future addRecord(bool isEdit) async {
+  Future addRecord(bool isEdit, Reminder reminder) async {
     var db = new DatabaseHelper();
-    var reminder = new Reminder(editReminderText.text);
+
+    //TODO ADD SELECTED TIME TO DATE HERE
+    //TODO check these work
+    var reminder = new Reminder(editReminderText.text, selectedDate, selectedCategory);
 
     if (isEdit){
       reminder.setReminderId(widget.reminder.id);

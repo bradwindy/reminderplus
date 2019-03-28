@@ -165,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(context,
           MaterialPageRoute(
-            builder: (context) => AddReminderPage(false, new Reminder("")),
+            builder: (context) => AddReminderPage(false, null),
           ),
         ),
         tooltip: 'New Reminder',
