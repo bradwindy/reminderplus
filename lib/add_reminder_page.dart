@@ -175,10 +175,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => {
         finalDate = new DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute),
-        //TODO this line below does not work if the user has not selected a date or time, so to fix this,
-        // need to have and option where the user doesn't need to choose a date or time
-        // could do this by setting the date and time values to null first rather than to the current time?
-        widget.reminder = new Reminder(saveText, finalDate.millisecondsSinceEpoch, selectedCategory),
+        widget.reminder = new Reminder(editReminderText.text, finalDate.millisecondsSinceEpoch, selectedCategory),
         addRecord(widget.isEdit, widget.reminder),
         Navigator.pop(context),
         },
@@ -222,7 +219,6 @@ class _AddReminderPageState extends State<AddReminderPage>{
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
         saveText = editReminderText.text;
-        print(saveText);
       }
     });
   }
