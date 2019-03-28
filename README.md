@@ -1,16 +1,26 @@
-# todo_plus
+# Reminder+
 
-TodoPlus 
+A flutter application that stores local reminders in SQLite
 
-## Getting Started
+## Built With
 
-This project is a starting point for a Flutter application.
+* [Flutter](https://github.com/flutter/flutter) - The app SDK used
+* [flutter_launcher_icons](https://pub.dartlang.org/packages/flutter_launcher_icons) - Used for app icon
+* [sqflite](https://pub.dartlang.org/packages/sqflite) - Used for sqlite operations
+* [path_provider](https://pub.dartlang.org/packages/path_provider) - Used for local filesystem path operations
 
-A few resources to get you started if this is your first Flutter project:
+## Versioning
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+I use [SemVer](http://semver.org/) for versioning.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Authors
+
+* **Bradley Windybank** - *All work* 
+
+## License
+
+Copyright (C) Bradley Windybank - All Rights Reserved. Unauthorized copying of this file, via any medium is strictly prohibited. This code is proprietary and confidential. Written by Bradley Windybank <trykryda@gmail.com>, 2019.
+
+## Acknowledgments
+
+* Authors of Flutter for providing such an awesome platform
