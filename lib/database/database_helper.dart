@@ -27,7 +27,7 @@ class DatabaseHelper {
 
   void _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE Reminders(id INTEGER PRIMARY KEY, text TEXT, date DATE, category TEXT)");
+        "CREATE TABLE Reminders(id INTEGER PRIMARY KEY, text TEXT, date INTEGER, category TEXT)");
   }
 
   Future<int> saveReminder(Reminder reminder) async {
@@ -42,8 +42,7 @@ class DatabaseHelper {
     List<Reminder> reminders = new List();
 
     for (int i = 0; i < list.length; i++) {
-      var reminder =
-        new Reminder(list[i]["text"],list[i]["date"],list[i]["category"]);
+      var reminder = new Reminder(list[i]["text"],list[i]["date"],list[i]["category"]);
       reminder.setReminderId(list[i]["id"]);
       reminders.add(reminder);
     }

@@ -15,12 +15,22 @@ class ReminderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    List weekdayList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
     return new ListView.builder(
       itemCount: reminders == null ? 0 : reminders.length,
       itemBuilder: (BuildContext context, int index) {
 
         return new CheckboxListTile(
           title: new Text(reminders[index].text),
+          subtitle: new Text(
+                      weekdayList[new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).weekday-1]
+              + " " + new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).day.toString()
+              + " " + monthList[new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).month-1]
+              + " " + new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).hour.toString()
+              + ":" + new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).minute.toString()
+              + ", " + reminders[index].category),
           value: false,
           onChanged: (bool value) => homePresenter.delete(reminders[index]),
         );

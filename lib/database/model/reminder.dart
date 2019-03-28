@@ -2,7 +2,7 @@ class Reminder {
 
   int id;
   String _text;
-  DateTime _date;
+  int _date;
   String _category;
 
   Reminder(this._text, this._date, this._category);
@@ -14,7 +14,7 @@ class Reminder {
   }
 
   String get text => _text;
-  DateTime get date => _date;
+  int get date => _date;
   String get category => _category;
 
   Map<String, dynamic> toMap() {
