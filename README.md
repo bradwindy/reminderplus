@@ -19,10 +19,10 @@ I use [SemVer](http://semver.org/) for versioning.
 
 ## License
 
-Copyright (C) Bradley Windybank - All Rights Reserved
-Unauthorized copying of this file, via any medium is strictly prohibited
-Proprietary and confidential
-Written by Bradley Windybank <trykryda@gmail.com>, March 2019
+Copyright (C) Bradley Windybank - All Rights Reserved \n
+Unauthorized copying of this file, via any medium is strictly prohibited\n
+Proprietary and confidential\n
+Written by Bradley Windybank <trykryda@gmail.com>, March 2019\n
 
 ## Acknowledgments
 
