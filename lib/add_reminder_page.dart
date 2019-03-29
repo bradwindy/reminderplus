@@ -113,7 +113,17 @@ class _AddReminderPageState extends State<AddReminderPage>{
     }
 
     if(selectedTime != null){
-      displayTime = selectedTime.hour.toString() + ":" + selectedTime.minute.toString();
+      String hourTemp = selectedTime.hour.toString();
+      String minTemp = selectedTime.minute.toString();
+
+      if (hourTemp.length == 1){
+        hourTemp = "0" + hourTemp;
+      }
+      if (minTemp.length == 1){
+        minTemp = "0" + minTemp;
+      }
+
+      displayTime = hourTemp + ":" + minTemp;
     }
 
     return new Scaffold(

@@ -20,17 +20,29 @@ class ReminderList extends StatelessWidget {
     if (reminder.date != null){
       DateTime dateTemp = new DateTime.fromMillisecondsSinceEpoch(reminder.date);
       if(dateTemp.hour == 0 && dateTemp.minute == 0){
-        return (weekdayList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).weekday-1]
-            + " " + new DateTime.fromMillisecondsSinceEpoch(reminder.date).day.toString()
-            + " " + monthList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).month-1]
+
+        return (    weekdayList[dateTemp.weekday-1] // weekday
+            + " " + dateTemp.day.toString() // day number
+            + " " + monthList[dateTemp.month-1] // month
             + ", " + reminder.category);
       }
 
-      return (weekdayList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).weekday-1]
-          + " " + new DateTime.fromMillisecondsSinceEpoch(reminder.date).day.toString()
-          + " " + monthList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).month-1]
-          + " " + new DateTime.fromMillisecondsSinceEpoch(reminder.date).hour.toString()
-          + ":" + new DateTime.fromMillisecondsSinceEpoch(reminder.date).minute.toString()
+      String hourTemp = dateTemp.hour.toString();
+      String minTemp = dateTemp.minute.toString();
+
+      if (hourTemp.length == 1){
+        hourTemp = "0" + hourTemp;
+      }
+      if (minTemp.length == 1){
+        minTemp = "0" + minTemp;
+      }
+
+      return (    weekdayList[dateTemp.weekday-1] // weekday
+          + " " + dateTemp.day.toString() // day number
+          + " " + monthList[dateTemp.month-1] // month
+
+          + " " + hourTemp
+          + ":" + minTemp
           + ", " + reminder.category);
     }
 
