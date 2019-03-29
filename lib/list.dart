@@ -13,10 +13,34 @@ class ReminderList extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+  String subtitleConstructor(Reminder reminder){
     List monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     List weekdayList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    if (reminder.date != null){
+      DateTime dateTemp = new DateTime.fromMillisecondsSinceEpoch(reminder.date);
+      if(dateTemp.hour == 0 && dateTemp.minute == 0){
+        return (weekdayList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).weekday-1]
+            + " " + new DateTime.fromMillisecondsSinceEpoch(reminder.date).day.toString()
+            + " " + monthList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).month-1]
+            + ", " + reminder.category);
+      }
+
+      return (weekdayList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).weekday-1]
+          + " " + new DateTime.fromMillisecondsSinceEpoch(reminder.date).day.toString()
+          + " " + monthList[new DateTime.fromMillisecondsSinceEpoch(reminder.date).month-1]
+          + " " + new DateTime.fromMillisecondsSinceEpoch(reminder.date).hour.toString()
+          + ":" + new DateTime.fromMillisecondsSinceEpoch(reminder.date).minute.toString()
+          + ", " + reminder.category);
+    }
+
+    return reminder.category;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+
 
     return new ListView.builder(
       itemCount: reminders == null ? 0 : reminders.length,
@@ -24,13 +48,7 @@ class ReminderList extends StatelessWidget {
 
         return new CheckboxListTile(
           title: new Text(reminders[index].text),
-          subtitle: new Text(
-                      weekdayList[new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).weekday-1]
-              + " " + new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).day.toString()
-              + " " + monthList[new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).month-1]
-              + " " + new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).hour.toString()
-              + ":" + new DateTime.fromMillisecondsSinceEpoch(reminders[index].date).minute.toString()
-              + ", " + reminders[index].category),
+          subtitle: new Text(subtitleConstructor(reminders[index])),
           value: false,
           onChanged: (bool value) => homePresenter.delete(reminders[index]),
         );

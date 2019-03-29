@@ -34,16 +34,22 @@ class _AddReminderPageState extends State<AddReminderPage>{
     FocusScope.of(context).requestFocus(new FocusNode());
     await Future.delayed(Duration(milliseconds: 100));
 
+    DateTime initDate;
+
+    if(selectedDate == null){
+      initDate = DateTime.now();
+    }
+
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        initialDate: initDate,
         firstDate: DateTime(2015),
         lastDate: DateTime(2101)
     );
 
     setState(() {
       selectedDate = picked;
-      print(selectedDate.toIso8601String());
+      //print(selectedDate.toIso8601String());
     });
   }
 
@@ -51,9 +57,15 @@ class _AddReminderPageState extends State<AddReminderPage>{
     FocusScope.of(context).requestFocus(new FocusNode());
     await Future.delayed(Duration(milliseconds: 100));
 
+    TimeOfDay initTime;
+
+    if(selectedTime == null){
+      initTime = TimeOfDay.now();
+    }
+
     final TimeOfDay pickedTime = await showTimePicker(
         context: context,
-        initialTime: selectedTime
+        initialTime: initTime,
     );
 
 
@@ -62,17 +74,47 @@ class _AddReminderPageState extends State<AddReminderPage>{
     });
   }
 
+  DateTime constructDate(DateTime date, TimeOfDay time){
+    if (date == null){
+      return null;
+    }
+
+    if (date != null && time == null){
+      return new DateTime(date.year, date.month, date.day);
+    }
+
+    return new DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  int finalDateInt (DateTime date){
+    if (date != null){
+      return date.millisecondsSinceEpoch;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!widget.isEdit && widget.reminder == null) {
       //So I can build buttons with these default values
-      widget.reminder = new Reminder("", DateTime.now().millisecondsSinceEpoch, "Inbox");
-      selectedDate = new DateTime.fromMillisecondsSinceEpoch(widget.reminder.date);
-      selectedTime = new TimeOfDay(hour: selectedDate.hour, minute: selectedDate.minute);
+      widget.reminder = new Reminder("", null, "Inbox");
+      selectedDate = null;
+      selectedTime = null;
     }
 
     editReminderText.text = saveText;
     selectedCategory = widget.reminder.category;
+
+    String displayDate = "None";
+    String displayTime = "None";
+
+    if(selectedDate != null){
+      displayDate = weekdayList[selectedDate.weekday-1] + " " + selectedDate.day.toString() + " " + monthList[selectedDate.month-1];
+    }
+
+    if(selectedTime != null){
+      displayTime = selectedTime.hour.toString() + ":" + selectedTime.minute.toString();
+    }
 
     return new Scaffold(
       appBar: new AppBar(
@@ -106,7 +148,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[
                             //day number month
-                            Text(weekdayList[selectedDate.weekday-1] + " " + selectedDate.day.toString() + " " + monthList[selectedDate.month-1],
+                            Text(displayDate,
                               style: TextStyle(fontWeight: FontWeight.normal),
                             ),
                             Icon(Icons.keyboard_arrow_right, color: Colors.pink),
@@ -129,7 +171,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
                         },
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[
-                            Text(selectedTime.hour.toString() + ":" + selectedTime.minute.toString(),
+                            Text(displayTime,
                               style: TextStyle(fontWeight: FontWeight.normal),
                             ),
                             Icon(Icons.keyboard_arrow_right, color: Colors.pink),
@@ -152,7 +194,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
                         },
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[
-                            Text("Personal",
+                            Text("Inbox",
                               style: TextStyle(fontWeight: FontWeight.normal),
                             ),
                             Icon(Icons.keyboard_arrow_right, color: Colors.pink),
@@ -174,8 +216,8 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => {
-        finalDate = new DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute),
-        widget.reminder = new Reminder(editReminderText.text, finalDate.millisecondsSinceEpoch, selectedCategory),
+        finalDate = constructDate(selectedDate, selectedTime),
+        widget.reminder = new Reminder(editReminderText.text, finalDateInt(finalDate), selectedCategory),
         addRecord(widget.isEdit, widget.reminder),
         Navigator.pop(context),
         },
