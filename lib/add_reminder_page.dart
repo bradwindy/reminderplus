@@ -34,7 +34,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
     FocusScope.of(context).requestFocus(new FocusNode());
     await Future.delayed(Duration(milliseconds: 100));
 
-    DateTime initDate;
+    DateTime initDate = selectedDate;
 
     if(selectedDate == null){
       initDate = DateTime.now();
@@ -57,7 +57,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
     FocusScope.of(context).requestFocus(new FocusNode());
     await Future.delayed(Duration(milliseconds: 100));
 
-    TimeOfDay initTime;
+    TimeOfDay initTime = selectedTime;
 
     if(selectedTime == null){
       initTime = TimeOfDay.now();
@@ -216,16 +216,47 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => {
-        finalDate = constructDate(selectedDate, selectedTime),
-        widget.reminder = new Reminder(editReminderText.text, finalDateInt(finalDate), selectedCategory),
-        addRecord(widget.isEdit, widget.reminder),
-        Navigator.pop(context),
+          _showNoDateDialog(context),
         },
         tooltip: 'Done',
         icon: Icon(Icons.done),
         label: const Text('Done'),
       ),
     );
+  }
+
+  void _showNoDateDialog(BuildContext context) {
+    if(selectedDate == null && selectedTime != null){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Oops!'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('You have chosen a time without choosing a date!',
+                    style: TextStyle(fontStyle: FontStyle.italic),),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('GO BACK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }else{
+      finalDate = constructDate(selectedDate, selectedTime);
+      widget.reminder = new Reminder(editReminderText.text, finalDateInt(finalDate), selectedCategory);
+      addRecord(widget.isEdit, widget.reminder);
+      Navigator.pop(context);
+    }
   }
 
   Widget getTextField(
