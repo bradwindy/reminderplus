@@ -131,7 +131,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
         title: new Text(widget.isEdit ? 'Edit' : 'Add new Reminder'),
       ),
 
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -219,7 +219,10 @@ class _AddReminderPageState extends State<AddReminderPage>{
             ),
           ],
         ),
+
       ),
+
+
 
       floatingActionButtonLocation:
       FloatingActionButtonLocation.centerFloat,
