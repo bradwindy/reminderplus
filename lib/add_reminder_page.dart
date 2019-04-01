@@ -17,16 +17,13 @@ class AddReminderPage extends StatefulWidget {
 }
 
 class _AddReminderPageState extends State<AddReminderPage>{
-  final editReminderText = TextEditingController();
   DateTime selectedDate;
   TimeOfDay selectedTime;
-  String selectedCategory;
+  String selectedCategory = "Inbox";
   DateTime finalDate;
   String saveText = "";
   bool prevInit = false;
-
-  final FocusNode _focusNode = FocusNode();
-
+  bool timeOrDateEdit = false;
   List monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   List weekdayList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -49,6 +46,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
     setState(() {
       selectedDate = picked;
+      timeOrDateEdit = true;
       //print(selectedDate.toIso8601String());
     });
   }
@@ -71,6 +69,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
     setState(() {
       selectedTime = pickedTime;
+      timeOrDateEdit = true;
     });
   }
 
@@ -95,15 +94,14 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.isEdit && widget.reminder == null) {
+    if (!widget.isEdit && widget.reminder == null && timeOrDateEdit == false) {
       //So I can build buttons with these default values
       widget.reminder = new Reminder("", null, "Inbox");
       selectedDate = null;
       selectedTime = null;
+      print("HIT FIRST IF");
     }
 
-    editReminderText.text = saveText;
-    selectedCategory = widget.reminder.category;
 
     String displayDate = "None";
     String displayTime = "None";
@@ -137,7 +135,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(32.0),
-              child: getTextField("Enter Text:", editReminderText),
+              child: getTextField("Enter Text:"),
             ),
 
             Padding(
@@ -200,7 +198,31 @@ class _AddReminderPageState extends State<AddReminderPage>{
                       ),
                       MaterialButton(
                         onPressed: () {
-                          //_selectDate(context);
+                          //TODO Make a popup happen here
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Feature Coming Soon'),
+                                content: SingleChildScrollView(
+                                  child: ListBody(
+                                    children: <Widget>[
+                                      Text('Right now, no category can be selected for reminders. They will all get saved to inbox.',
+                                        style: TextStyle(fontStyle: FontStyle.italic),),
+                                    ],
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text('OKAY'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[
@@ -266,24 +288,20 @@ class _AddReminderPageState extends State<AddReminderPage>{
       );
     }else{
       finalDate = constructDate(selectedDate, selectedTime);
-      widget.reminder = new Reminder(editReminderText.text, finalDateInt(finalDate), selectedCategory);
+      widget.reminder = new Reminder(saveText, finalDateInt(finalDate), selectedCategory);
       addRecord(widget.isEdit, widget.reminder);
       Navigator.pop(context);
     }
   }
 
-  Widget getTextField(
-    String inputBoxName, TextEditingController inputBoxController) {
+  Widget getTextField(String inputBoxName) {
     var textBtn = new Padding(
       padding: const EdgeInsets.all(5.0),
       child: new TextField(
-        controller: inputBoxController,
-        focusNode: _focusNode,
-        decoration: new InputDecoration(
-          hintText: inputBoxName,
-        ),
+        decoration: new InputDecoration(hintText: inputBoxName),
         autofocus: true,
         textCapitalization: TextCapitalization.sentences,
+        onChanged: (text) => saveText = text,
       ),
     );
     return textBtn;
@@ -297,15 +315,5 @@ class _AddReminderPageState extends State<AddReminderPage>{
     }else{
       await db.saveReminder(reminder);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        saveText = editReminderText.text;
-      }
-    });
   }
 }
