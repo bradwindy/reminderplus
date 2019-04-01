@@ -222,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text('Feature Coming Soon :)'),
+          title: Text('Feature Coming Soon'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[

@@ -198,7 +198,6 @@ class _AddReminderPageState extends State<AddReminderPage>{
                       ),
                       MaterialButton(
                         onPressed: () {
-                          //TODO Make a popup happen here
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -261,7 +260,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
   }
 
   void _showNoDateDialog(BuildContext context) {
-    if(selectedDate == null && selectedTime != null){
+    if(selectedDate == null && selectedTime != null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -271,6 +270,31 @@ class _AddReminderPageState extends State<AddReminderPage>{
               child: ListBody(
                 children: <Widget>[
                   Text('You have chosen a time without choosing a date!',
+                    style: TextStyle(fontStyle: FontStyle.italic),),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('GO BACK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }else if(saveText == null || saveText == "") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Oops!'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('You have not chosen any text for the reminder!',
                     style: TextStyle(fontStyle: FontStyle.italic),),
                 ],
               ),
