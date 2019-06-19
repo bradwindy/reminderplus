@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reminder_plus/add_reminder_page.dart';
+import 'package:reminder_plus/settings_page.dart';
 import 'package:reminder_plus/database/model/reminder.dart';
 import 'package:reminder_plus/home_presenter.dart';
 import 'package:reminder_plus/list.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -66,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                Icons.folder_special,
+                                  OMIcons.folderSpecial
                               ),
                               onTap: () {},
                             ),
@@ -80,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                Icons.done_all,
+                                OMIcons.doneAll,
                               ),
                               onTap: () {},
                             ),
@@ -94,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                Icons.account_circle,
+                                OMIcons.accountCircle,
                               ),
                               onTap: () {},
                             ),
@@ -108,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                Icons.help,
+                                Icons.help_outline,
                               ),
                               onTap: () {},
                             ),
@@ -122,9 +124,14 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                Icons.settings,
+                                OMIcons.settings,
                               ),
-                              onTap: () {},
+                              onTap: () =>
+                                  Navigator.push(context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SettingsPage(),
+                                    ),
+                                  ),
                             ),
                           ],
                         ),
@@ -201,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                 children: <Widget>[
                   Text('Inbox', style: TextStyle(fontWeight: FontWeight.bold)),
                   IconButton(
-                    icon: Icon(Icons.inbox),
+                    icon: Icon(OMIcons.inbox),
                     onPressed: () {
                       _showFeatureDialog();
                     },
