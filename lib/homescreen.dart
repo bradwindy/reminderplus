@@ -5,6 +5,8 @@ import 'package:reminder_plus/database/model/reminder.dart';
 import 'package:reminder_plus/home_presenter.dart';
 import 'package:reminder_plus/list.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -16,11 +18,54 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> implements HomeContract {
   HomePresenter homePresenter;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   void initState() {
     super.initState();
     homePresenter = new HomePresenter(this);
+
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    new FlutterLocalNotificationsPlugin();
+
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('app_icon');
+
+    var initializationSettingsIOS;
+
+    var initializationSettings = new InitializationSettings(
+        initializationSettingsAndroid,
+        initializationSettingsIOS
+    );
+
+    flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+        onSelectNotification: onSelectNotification
+    );
+  }
+
+  Future onSelectNotification(String payload) {
+    debugPrint("payload : $payload");
+    showDialog(
+      context: context,
+      builder: (_) =>
+      new AlertDialog(
+        title: new Text('Notification'),
+        content: new Text('$payload'),
+      ),
+    );
+  }
+
+  showNotification() async {
+    var android = new AndroidNotificationDetails(
+        'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+        priority: Priority.High, importance: Importance.Max
+    );
+    var iOS = new IOSNotificationDetails();
+    var platform = new NotificationDetails(android, iOS);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'New Video is out', 'Flutter Local Notification', platform,
+        payload: 'Nitish Kumar Singh is part time Youtuber');
   }
 
  /* List<Widget> _buildActions() {
@@ -62,6 +107,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                             ListTile(
                               title: Text(
                                 "Categories",
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800]),
                               ),
                               subtitle: Text(
                                 "Coming Soon",
@@ -71,11 +118,14 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                   OMIcons.folderSpecial
                               ),
                               onTap: () {},
+
                             ),
 
                             ListTile(
                               title: Text(
                                 "Completed",
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800]),
                               ),
                               subtitle: Text(
                                 "Coming Soon",
@@ -90,6 +140,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                             ListTile(
                               title: Text(
                                 "Account",
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800]),
                               ),
                               subtitle: Text(
                                 "Coming Soon",
@@ -104,6 +156,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                             ListTile(
                               title: Text(
                                 "Help",
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800]),
                               ),
                               subtitle: Text(
                                 "Coming Soon",
@@ -118,6 +172,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                             ListTile(
                               title: Text(
                                 "Settings",
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800]),
                               ),
                               subtitle: Text(
                                 "Coming Soon",
@@ -151,8 +207,9 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Reminder+'),
+        title: new Text('Reminder+', style: TextStyle(color: Colors.grey[700])),
         // actions: _buildActions(),
+        backgroundColor: Colors.white,
       ),
 
       body: new FutureBuilder<List<Reminder>>(
@@ -194,8 +251,10 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                   IconButton(
                     onPressed: showMenu,
                     icon: Icon(Icons.menu),
+                      color: Colors.grey[700]
                   ),
-                  Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Menu', style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.grey[700])),
                   //Text('Reminder', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[600])),
                 ],
               ),
@@ -206,9 +265,11 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text('Inbox', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Inbox', style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.grey[700])),
                   IconButton(
                     icon: Icon(OMIcons.inbox),
+                    color: Colors.grey[700],
                     onPressed: () {
                       _showFeatureDialog();
                     },

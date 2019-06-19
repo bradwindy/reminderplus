@@ -11,9 +11,10 @@ class MyApp extends StatelessWidget {
       title: 'Reminder+',
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         accentColor: Colors.pink,
         accentColorBrightness: Brightness.dark,
+        primaryColor: Colors.pink,
       ),
       home: new MyHomePage(title: 'Reminder+'),
     );

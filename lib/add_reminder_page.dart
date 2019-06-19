@@ -126,7 +126,10 @@ class _AddReminderPageState extends State<AddReminderPage>{
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(widget.isEdit ? 'Edit' : 'Add new Reminder'),
+        iconTheme: IconThemeData(color: Colors.grey[700]),
+        title: new Text(widget.isEdit ? 'Edit' : 'Add new Reminder',
+            style: TextStyle(color: Colors.grey[700])),
+        backgroundColor: Colors.white,
       ),
 
       body: SingleChildScrollView(
