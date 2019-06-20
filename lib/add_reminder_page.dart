@@ -270,30 +270,7 @@ class _AddReminderPageState extends State<AddReminderPage>{
                       ),
                       MaterialButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Feature Coming Soon'),
-                                content: SingleChildScrollView(
-                                  child: ListBody(
-                                    children: <Widget>[
-                                      Text('Right now, no category can be selected for reminders. They will all get saved to inbox.',
-                                        style: TextStyle(fontStyle: FontStyle.italic),),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text('OKAY'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+
                         },
                         child: Row( // Replace with a Row for horizontal icon + text
                           children: <Widget>[

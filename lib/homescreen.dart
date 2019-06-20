@@ -115,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                  OMIcons.folderSpecial
+                                  OMIcons.folderSpecial,
+                                  color: Colors.pink
                               ),
                               onTap: () {},
 
@@ -132,7 +133,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                OMIcons.doneAll,
+                                  OMIcons.doneAll,
+                                  color: Colors.pink
                               ),
                               onTap: () {},
                             ),
@@ -148,7 +150,8 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               leading: Icon(
-                                OMIcons.accountCircle,
+                                  OMIcons.accountCircle,
+                                  color: Colors.pink
                               ),
                               onTap: () {},
                             ),
@@ -165,6 +168,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                               ),
                               leading: Icon(
                                 Icons.help_outline,
+                                  color: Colors.pink
                               ),
                               onTap: () {},
                             ),
@@ -181,6 +185,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
                               ),
                               leading: Icon(
                                 OMIcons.settings,
+                                  color: Colors.pink
                               ),
                               onTap: () =>
                                   Navigator.push(context,
@@ -245,36 +250,21 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(left: 10.0, top: 5, bottom: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: showMenu,
-                    icon: Icon(Icons.menu),
-                      color: Colors.grey[700]
-                  ),
-                  Text('Menu', style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey[700])),
-                  //Text('Reminder', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[600])),
-                ],
+              child: IconButton(
+                  onPressed: showMenu,
+                  icon: Icon(Icons.menu),
+                  color: Colors.grey[700]
               ),
             ),
 
             Padding(
               padding: EdgeInsets.only(right: 10.0, top: 5, bottom: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('Inbox', style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey[700])),
-                  IconButton(
-                    icon: Icon(OMIcons.inbox),
-                    color: Colors.grey[700],
-                    onPressed: () {
-                      _showFeatureDialog();
-                    },
-                  ),
-                ],
+              child: IconButton(
+                icon: Icon(OMIcons.folderSpecial),
+                color: Colors.grey[700],
+                onPressed: () {
+                  _showFeatureDialog();
+                },
               ),
             ),
           ],

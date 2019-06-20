@@ -68,24 +68,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 await testNotification();
               },
             ),
-
-            ListTile(
-              title: Text(
-                "Scheduled Test Notification",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.grey[800]),
-              ),
-              subtitle: Text(
-                "Tap to recieve a scheduled test notification",
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-              leading: Icon(
-                OMIcons.notificationsActive,
-              ),
-              onTap: () async {
-                await scheduledTestNotification();
-              },
-            ),
           ],
         ));
   }
