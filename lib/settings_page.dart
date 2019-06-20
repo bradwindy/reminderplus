@@ -65,7 +65,25 @@ class _SettingsPageState extends State<SettingsPage> {
                 OMIcons.notificationsActive,
               ),
               onTap: () async {
-                await _showNotification();
+                await testNotification();
+              },
+            ),
+
+            ListTile(
+              title: Text(
+                "Scheduled Test Notification",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.grey[800]),
+              ),
+              subtitle: Text(
+                "Tap to recieve a scheduled test notification",
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              leading: Icon(
+                OMIcons.notificationsActive,
+              ),
+              onTap: () async {
+                await scheduledTestNotification();
               },
             ),
           ],
@@ -81,22 +99,64 @@ class _SettingsPageState extends State<SettingsPage> {
 
   }
 
-  Future<void> _showNotification() async {
+  Future<void> testNotification() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
-      importance: Importance.Max,
-      priority: Priority.High,
-      ticker: 'ticker',
+        'ReminderChannel',
+        'Reminders',
+        'Reminder Notifications',
+        icon: 'secondary_icon',
+        color: const Color.fromARGB(255, 255, 0, 164),
+        ledColor: const Color.fromARGB(255, 255, 0, 164),
+        ledOnMs: 1000,
+        ledOffMs: 1000
     );
+
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        androidPlatformChannelSpecifics,
+        iOSPlatformChannelSpecifics
+    );
+
     await flutterLocalNotificationsPlugin.show(
         0,
-        'Hello',
-        'This is a notification!',
+        'Test Notification',
+        'This is a test notification 🛠',
         platformChannelSpecifics,
         payload: 'item x'
     );
   }
+
+  Future<void> scheduledTestNotification() async {
+    var scheduledNotificationDateTime = DateTime.now().add(
+        Duration(seconds: 10));
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'ReminderChannel',
+        'Reminders',
+        'Reminder Notifications',
+        icon: 'secondary_icon',
+        color: const Color.fromARGB(255, 255, 0, 164),
+        ledColor: const Color.fromARGB(255, 255, 0, 164),
+        ledOnMs: 1000,
+        ledOffMs: 1000
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics,
+        iOSPlatformChannelSpecifics
+    );
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Test Notification',
+        'This is a test notification 🛠',
+        scheduledNotificationDateTime,
+        platformChannelSpecifics,
+        payload: 'item x'
+    );
+  }
+
 }

@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:reminder_plus/database/database_helper.dart';
 import 'package:reminder_plus/database/model/reminder.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 
 class AddReminderPage extends StatefulWidget {
   Reminder reminder;
@@ -26,6 +30,30 @@ class _AddReminderPageState extends State<AddReminderPage>{
   bool timeOrDateEdit = false;
   List monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   List weekdayList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  @override
+  void initState() {
+    super.initState();
+
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    new FlutterLocalNotificationsPlugin();
+
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('app_icon');
+
+    var initializationSettingsIOS = new IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+
+    var initializationSettings = new InitializationSettings(
+        initializationSettingsAndroid,
+        initializationSettingsIOS
+    );
+
+    flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+        onSelectNotification: onSelectNotification
+    );
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
@@ -90,6 +118,47 @@ class _AddReminderPageState extends State<AddReminderPage>{
       return date.millisecondsSinceEpoch;
     }
     return null;
+  }
+
+  Future onSelectNotification(String payload) {
+
+  }
+
+  Future onDidReceiveLocalNotification(int hi, String one, String two,
+      String three) {
+
+  }
+
+  Future<void> scheduledTestNotification(String contents, String category,
+      DateTime date) async {
+    var scheduledNotificationDateTime = date;
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'ReminderChannel',
+        'Reminders',
+        'Reminder Notifications',
+        icon: 'secondary_icon',
+        color: const Color.fromARGB(255, 255, 0, 164),
+        ledColor: const Color.fromARGB(255, 255, 0, 164),
+        ledOnMs: 1000,
+        ledOffMs: 1000
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics,
+        iOSPlatformChannelSpecifics
+    );
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        contents,
+        category,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics,
+        payload: 'item x'
+    );
   }
 
   @override
@@ -263,7 +332,8 @@ class _AddReminderPageState extends State<AddReminderPage>{
   }
 
   void _showNoDateDialog(BuildContext context) {
-    if(selectedDate == null && selectedTime != null) {
+    if ((selectedDate == null && selectedTime != null) ||
+        (selectedDate != null && selectedTime == null)) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -272,7 +342,8 @@ class _AddReminderPageState extends State<AddReminderPage>{
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('You have chosen a time without choosing a date!',
+                  Text(
+                    'Date and time must both be selected for a notification to occur',
                     style: TextStyle(fontStyle: FontStyle.italic),),
                 ],
               ),
@@ -317,6 +388,13 @@ class _AddReminderPageState extends State<AddReminderPage>{
       finalDate = constructDate(selectedDate, selectedTime);
       widget.reminder = new Reminder(saveText, finalDateInt(finalDate), selectedCategory);
       addRecord(widget.isEdit, widget.reminder);
+
+      //TODO if statement for if date and time are NULL
+
+      if (finalDate != null) {
+        scheduledTestNotification(saveText, selectedCategory, finalDate);
+      }
+
       Navigator.pop(context);
     }
   }
