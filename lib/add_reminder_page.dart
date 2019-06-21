@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:reminder_plus/database/database_helper.dart';
 import 'package:reminder_plus/database/model/reminder.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:reminder_plus/change_categories_page.dart';
+
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -30,6 +32,13 @@ class _AddReminderPageState extends State<AddReminderPage>{
   bool timeOrDateEdit = false;
   List monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   List weekdayList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  List categories = [
+    "+ Add Category",
+    "Inbox",
+    "Personal",
+    "Work",
+    "University"
+  ];
 
   @override
   void initState() {
@@ -268,19 +277,27 @@ class _AddReminderPageState extends State<AddReminderPage>{
                       Text('Select Category: ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      MaterialButton(
-                        onPressed: () {
-
-                        },
-                        child: Row( // Replace with a Row for horizontal icon + text
-                          children: <Widget>[
-                            Text("Inbox",
-                              style: TextStyle(fontWeight: FontWeight.normal),
-                            ),
-                            Icon(Icons.keyboard_arrow_right, color: Colors.pink),
-                          ],
+                      Padding(
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        child: DropdownButton<String>(
+                          value: selectedCategory,
+                          onChanged: (String newValue) {
+                            if (newValue == "+ Add Category") {
+                              _showFeatureDialog();
+                            } else {
+                              setState(() {
+                                selectedCategory = newValue;
+                              });
+                            }
+                          },
+                          items: categories
+                              .cast<String>()
+                              .map((value) =>
+                              DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              )).toList(),
                         ),
-                        //color: Colors.pink,
                       ),
                     ],
                   ),
@@ -397,5 +414,34 @@ class _AddReminderPageState extends State<AddReminderPage>{
     }else{
       await db.saveReminder(reminder);
     }
+  }
+
+  void _showFeatureDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text('Feature Coming Soon'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This feature will be here in the near future.',
+                  style: TextStyle(fontStyle: FontStyle.italic),),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OKAY'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
