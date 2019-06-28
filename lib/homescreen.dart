@@ -240,6 +240,7 @@ class _MyHomePageState extends State<MyHomePage> implements HomeContract {
         tooltip: 'New Reminder',
         icon: Icon(Icons.add),
         label: const Text('Add Reminder'),
+        elevation: 2,
       ),
 
       bottomNavigationBar: BottomAppBar(

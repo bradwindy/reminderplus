@@ -49,6 +49,10 @@ class ReminderList extends StatelessWidget {
     return reminder.category;
   }
 
+  void sleepDelete(int index) {
+    homePresenter.delete(reminders[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -62,7 +66,7 @@ class ReminderList extends StatelessWidget {
           title: new Text(reminders[index].text),
           subtitle: new Text(subtitleConstructor(reminders[index])),
           value: false,
-          onChanged: (bool value) => homePresenter.delete(reminders[index]),
+          onChanged: (bool value) => sleepDelete(index),
         );
 
         /*return new Card(
