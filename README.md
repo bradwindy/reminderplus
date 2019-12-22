@@ -18,11 +18,3 @@ I use [SemVer](http://semver.org/) for versioning.
 ## Authors
 
 * **Bradley Windybank** - *All work* 
-
-## License
-
-Copyright (C) Bradley Windybank - All Rights Reserved. Unauthorized copying of this file, via any medium is strictly prohibited. This code is proprietary and confidential. Written by Bradley Windybank <trykryda@gmail.com>, 2019.
-
-## Acknowledgments
-
-* Authors of Flutter for providing such an awesome platform
